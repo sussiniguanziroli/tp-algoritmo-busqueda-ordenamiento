@@ -1,29 +1,28 @@
-import json #importo la herramienta para leer formato
-import matplotlib.pyplot as plt #importo la libreria de matplotlib para graficar la diferencia de tiempos
-import timeit #importo la libreria de timeit para calcular los tiempos de ejecucion```
+import json
+import matplotlib.pyplot as plt
+import timeit
 
-#uso la funcion json.load para asignar la data del json a una lista de python
+# Uso de la funcion json.load para asignar datos del archivo json a una lista
 with open('productos.json', 'r', encoding='utf-8') as file:
     productos = json.load(file) 
 
 def busqueda_lineal_por_nombre(lista_productos, nombre_buscado):
     for producto in lista_productos:
-        if producto["name"].lower() == nombre_buscado.lower(): #agregamos la funcion .lower() para evitar el case sensitive
+        if producto["name"].lower() == nombre_buscado.lower(): # Se agrega la funcion .lower() para evitar el case sensitive
             return producto
-    return None #si termina el recorrido sin encontrar
+    return None # Si el se termina el recorrido sin encontrar
         
 # Tiempo de ejecución busqueda_lineal por nombre
 comienzo = timeit.default_timer()        
 resultado_busqueda = busqueda_lineal_por_nombre(productos, "Johnnie Walker Red Label")
 fin = timeit.default_timer()
 tiempo_busqueda_lineal_por_nombre = fin - comienzo
-####print(resultado_busqueda)
+### print(resultado_busqueda)
 
-#para efectuar una busqueda binaria por categoria, es decir, traer todos los vinos, debemos tener
-#una lista ordenada primero, asi que procedemos a hacer un algoritmo de ordenamiento por categoria
+"""Para efectuar una busqueda binaria por categoria, es decir, traer todos los vinos, 
+debemos tener una lista ordenada primero. Procedemos a hacer un algoritmo de ordenamiento por categoria. """
 
-#usamos un algoritmo MergeSort 
-
+# Se utiliza un algoritmo MergeSort 
 def merge_sort(productos_a_ordenar):
     if len(productos_a_ordenar) <= 1:
         return productos_a_ordenar
@@ -39,7 +38,7 @@ def merge(izquierda, derecha):
     i = j = 0
 
     while i < len(izquierda) and j < len(derecha):
-        #realizamos orden por categoria
+        # Se realiza el orden por categoria
         if izquierda[i]["category"].lower() <= derecha[j]["category"].lower():
             resultado_ordenado.append(izquierda[i])
             i += 1
@@ -50,24 +49,22 @@ def merge(izquierda, derecha):
     resultado_ordenado.extend(derecha[j:])
     return resultado_ordenado
 
-############ Fin MergeSort - ordena los productos por categoria, empezando todos los gin
-#luego los ron, etc
+""" Finaliza MergeSort: Se ordenaron los productos por categoria, comenzando con gin; luego ron, etc."""
 
 
 productos_ordenados_por_categoria = merge_sort(productos)
-#print(productos_ordenados_por_categoria)
+### print(productos_ordenados_por_categoria)
 
-## empieza la busqueda binaria, la cual se le pasa la lista ordenada MergeSort
-
-def busqueda_binaria_por_categoria(lista_ordenada, categoria): #recibe la lista y la categoria que se quiere buscar
-    #inicializamos los extremos, izquierda, derecha y el centro, que va a ser los extremos // 2
+# Se realiza la busqueda binaria; se pasa una lista ordenada -> MergeSort
+def busqueda_binaria_por_categoria(lista_ordenada, categoria): # Recibe lista y categoria a buscar
+    # Se inicializan los extremos, izquierda, derecha y el centro (extremos // 2 )
     izquierda = 0
     derecha = len(lista_ordenada) -1
     resultado_busqueda_binaria = []
 
     while izquierda <= derecha:
         centro = (izquierda + derecha) // 2
-        if lista_ordenada[centro]["category"].lower() == categoria.lower(): #si el centro es de la categoria buscada, empieza la busqueda lineal hasta encontrarse con algo diferente hacia ambos lados
+        if lista_ordenada[centro]["category"].lower() == categoria.lower(): # En caso de que la categoria centro sea la buscada, comienza busqueda lineal hacia ambos lados, hasta encontrar algo diferente 
             resultado_busqueda_binaria.append(lista_ordenada[centro])
             izquierda = centro - 1
             while izquierda >= 0 and lista_ordenada[izquierda]["category"].lower() == categoria.lower():
@@ -78,17 +75,17 @@ def busqueda_binaria_por_categoria(lista_ordenada, categoria): #recibe la lista 
                 resultado_busqueda_binaria.append(lista_ordenada[derecha])
                 derecha += 1
             return resultado_busqueda_binaria
-        elif lista_ordenada[centro]["category"].lower() < categoria.lower(): #si la categoria del centro es menor alfabeticamente que la buscada se descarta la mitad izquierda, ya que no podria estar ahi
+        elif lista_ordenada[centro]["category"].lower() < categoria.lower(): # Si la categoria del centro es menor alfabeticamente que la buscada se descarta la mitad izquierda, ya que no podria estar ahi
             izquierda = centro + 1
-        else: #mismo descarte pero si es mayor que la buscada
+        else: # Idem paso anterior, pero se realiza el descarte si es mayor que la buscada
             derecha = centro - 1
     return resultado_busqueda_binaria
 
 todos_los_whiskies = busqueda_binaria_por_categoria(productos_ordenados_por_categoria, "whisky")
-#print(todos_los_whiskies)
+### print(todos_los_whiskies)
 
 
-########### mismo MergeSort por "nombre" para hacer la busqueda 100% binaria en la lista
+# Se realiza MergeSort por "nombre" previo a realizar la busqueda binaria en la lista
 
 def merge_sort_nombre(productos_a_ordenar):
     if len(productos_a_ordenar) <= 1:
@@ -105,7 +102,7 @@ def merge_por_nombre(izquierda, derecha):
     i = j = 0
 
     while i < len(izquierda) and j < len(derecha):
-        #realizamos orden por nombre
+        # Se realiza el ordenamiento por nombre
         if izquierda[i]["name"].lower() <= derecha[j]["name"].lower():
             resultado_ordenado_por_nombre.append(izquierda[i])
             i += 1
@@ -117,9 +114,9 @@ def merge_por_nombre(izquierda, derecha):
     return resultado_ordenado_por_nombre
 
 productos_ordenados_por_nombre = merge_sort_nombre(productos)
-###print(productos_ordenados_por_nombre)
+### print(productos_ordenados_por_nombre)
 
-#ahora si la busqueda binaria por el nombre exacto
+# Se realiza busqueda binaria por el nombre
 
 def busqueda_binaria_por_nombre(lista_ordenada, nombre_buscado):
     izquierda = 0
@@ -129,12 +126,12 @@ def busqueda_binaria_por_nombre(lista_ordenada, nombre_buscado):
         centro = (izquierda + derecha) // 2
         nombre_centro = lista_ordenada[centro]["name"].lower()
         if nombre_centro == nombre_buscado.lower():
-            return lista_ordenada[centro] #indice del elemento que buscamos si es justo el del centro
+            return lista_ordenada[centro] # Indice del elemento que buscamos, en caso de que sea justo el del centro
         elif nombre_centro < nombre_buscado.lower():
             izquierda = centro + 1
         else:
             derecha = centro - 1
-    return None #si no existe el elemento que buscamos en toda la lista
+    return None # Si no existe el elemento que buscamos en toda la lista
 
 
 # Tiempo de ejecución busqueda_binaria por nombre
@@ -142,13 +139,13 @@ comienzo = timeit.default_timer()
 resultado_busqueda_binaria_nombre = busqueda_binaria_por_nombre(productos_ordenados_por_nombre, "Johnnie Walker Red Label")
 fin = timeit.default_timer()
 tiempo_busqueda_binaria_por_nombre = fin - comienzo
-##print(resultado_busqueda_binaria_nombre['name'])
+### print(resultado_busqueda_binaria_nombre['name'])
 
 
-tipos_busqueda_por_nombre = ['Busqueda Lineal', 'Busqueda Binaria']
-tiempos_por_nombre = [tiempo_busqueda_lineal_por_nombre, tiempo_busqueda_binaria_por_nombre]
+tipos_busqueda_por_nombre = ['Busqueda Lineal', 'Busqueda Binaria'] #Nombre columna 
+tiempos_por_nombre = [tiempo_busqueda_lineal_por_nombre, tiempo_busqueda_binaria_por_nombre] # Valor a considerar
 
-plt.bar(tipos_busqueda_por_nombre, tiempos_por_nombre, color=['violet', 'green'])
-plt.title('Comparativa de tiempo de busqueda por nombre')
-plt.ylabel('Tiempo (segundos)')
-plt.show()
+plt.bar(tipos_busqueda_por_nombre, tiempos_por_nombre, color=['violet', 'green']) # Se asigna color a columna
+plt.title('Comparativa de tiempo de busqueda por nombre') # Titulo
+plt.ylabel('Tiempo (segundos)') # Etiqueta eje Y
+plt.show() # Se muestra el grafico
