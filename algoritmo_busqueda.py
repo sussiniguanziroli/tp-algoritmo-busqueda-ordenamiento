@@ -1,4 +1,6 @@
 import json #importo la herramienta para leer formato
+import matplotlib.pyplot as plt #importo la libreria de matplotlib para graficar la diferencia de tiempos
+import timeit #importo la libreria de timeit para calcular los tiempos de ejecucion```
 
 #uso la funcion json.load para asignar la data del json a una lista de python
 with open('productos.json', 'r', encoding='utf-8') as file:
@@ -10,7 +12,11 @@ def busqueda_lineal_por_nombre(lista_productos, nombre_buscado):
             return producto
     return None #si termina el recorrido sin encontrar
         
+# Tiempo de ejecución busqueda_lineal por nombre
+comienzo = timeit.default_timer()        
 resultado_busqueda = busqueda_lineal_por_nombre(productos, "Johnnie Walker Red Label")
+fin = timeit.default_timer()
+tiempo_busqueda_lineal_por_nombre = fin - comienzo
 ####print(resultado_busqueda)
 
 #para efectuar una busqueda binaria por categoria, es decir, traer todos los vinos, debemos tener
@@ -46,6 +52,7 @@ def merge(izquierda, derecha):
 
 ############ Fin MergeSort - ordena los productos por categoria, empezando todos los gin
 #luego los ron, etc
+
 
 productos_ordenados_por_categoria = merge_sort(productos)
 #print(productos_ordenados_por_categoria)
@@ -129,5 +136,19 @@ def busqueda_binaria_por_nombre(lista_ordenada, nombre_buscado):
             derecha = centro - 1
     return None #si no existe el elemento que buscamos en toda la lista
 
+
+# Tiempo de ejecución busqueda_binaria por nombre
+comienzo = timeit.default_timer()   
 resultado_busqueda_binaria_nombre = busqueda_binaria_por_nombre(productos_ordenados_por_nombre, "Johnnie Walker Red Label")
+fin = timeit.default_timer()
+tiempo_busqueda_binaria_por_nombre = fin - comienzo
 ##print(resultado_busqueda_binaria_nombre['name'])
+
+
+tipos_busqueda_por_nombre = ['Busqueda Lineal', 'Busqueda Binaria']
+tiempos_por_nombre = [tiempo_busqueda_lineal_por_nombre, tiempo_busqueda_binaria_por_nombre]
+
+plt.bar(tipos_busqueda_por_nombre, tiempos_por_nombre, color=['violet', 'green'])
+plt.title('Comparativa de tiempo de busqueda por nombre')
+plt.ylabel('Tiempo (segundos)')
+plt.show()
