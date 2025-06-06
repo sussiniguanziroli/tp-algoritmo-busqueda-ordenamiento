@@ -40,3 +40,6 @@ Se generaron gráficos comparativos que muestran el rendimiento de cada algoritm
 
 🎥 Video presentación  
 🔗 [Ver video de presentación sobre la temática desarrollada](https://drive.google.com/file/d/1nMHxtTM_8kjoD56OGr3hIwk8USTV-IzZ/view?usp=drive_link)
+
+📄 Trabajo práctico escrito  
+🔗 [Ver el documento con el desarrollo del trabajo práctico](https://drive.google.com/file/d/1ffTz0tkDUPMxo57_Yb6gk_9BmBslpAh4/view?usp=drive_link)
