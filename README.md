@@ -1,4 +1,4 @@
-🧩 <h1>TP Integrador – Algoritmos de Búsqueda y Ordenamiento<h1>
+# 🧩 TP Integrador – Algoritmos de Búsqueda y Ordenamiento
 
 Este repositorio contiene el desarrollo del Trabajo Práctico Integrador de la materia *Programación 1*, centrado en la implementación, comparación y análisis de algoritmos de búsqueda y ordenamiento.
 
